@@ -1,0 +1,30 @@
+{
+  "name": "electron-pdf-window",
+  "version": "1.0.0",
+  "description": "view PDF files in electron browser windows",
+  "main": "index.js",
+  "scripts": {
+    "test": "electron test"
+  },
+  "keywords": [
+    "electron",
+    "pdf",
+    "viewer",
+    "pdfjs"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/gerhardberger/electron-pdf-window.git"
+  },
+  "dependencies": {
+    "file-type": "^3.9.0",
+    "read-chunk": "^2.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.4.0",
+    "eslint-config-standard": "^5.3.5",
+    "eslint-plugin-standard": "^2.0.0"
+  },
+  "author": "@gellerthegyi",
+  "license": "MIT"
+}

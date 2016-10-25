@@ -1,0 +1,4 @@
+"extends": "standard"
+"rules": {
+  no-class-assign: 0
+}
