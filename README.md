@@ -7,7 +7,7 @@ a new window. a `PDFWindow` instance is just a subclass of `BrowserWindow` so it
 can be used just like it.
 
 <p align="center">
-  <img align="center" src="./screenshot.png" height=200 />
+  <img align="center" src="./screenshot.png" height=400 />
 </p>
 
 
