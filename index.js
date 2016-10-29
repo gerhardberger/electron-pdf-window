@@ -59,7 +59,6 @@ class PDFWindow extends BrowserWindow {
   }
 
   loadURL (url) {
-    console.log(url)
     isPDF(url).then(isit => {
       if (isit) {
         super.loadURL(`file://${
