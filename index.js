@@ -4,6 +4,7 @@ const http = require('http')
 const https = require('https')
 const readChunk = require('read-chunk')
 const fileType = require('file-type')
+const extend = require('deep-extend')
 
 function isPDF (url) {
   return new Promise((resolve, reject) => {
@@ -40,7 +41,7 @@ function isPDF (url) {
 
 class PDFWindow extends BrowserWindow {
   constructor (opts) {
-    super(Object.assign({}, opts, {
+    super(extend({}, opts, {
       webPreferences: { nodeIntegration: false }
     }))
 
