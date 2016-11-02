@@ -11,9 +11,12 @@ function isPDF (url) {
     if (url.match(/^file:\/\//i)) {
       const fileUrl = url.replace(/^file:\/\//i, '')
       const buffer = readChunk.sync(fileUrl, 0, 262)
+      const ft = fileType(buffer)
 
-      resolve(fileType(buffer).mime === 'application/pdf')
-    } else if (url.match(/.pdf$/i)) {
+      if (!ft) return resolve(false)
+
+      resolve(ft.mime === 'application/pdf')
+    } else if (url.match(/\.pdf$/i)) {
       resolve(true)
     } else {
       const prot = url.match(/^https:\/\//i) ? https : http
