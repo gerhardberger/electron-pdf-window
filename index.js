@@ -19,7 +19,9 @@ function isPDF (url) {
     } else if (url.match(/\.pdf$/i)) {
       resolve(true)
     } else {
-      const prot = url.match(/^https:\/\//i) ? https : http
+      const m = url.match(/^(https*):\/\//i)
+      if (!m) resolve(false)
+      const prot = m[1] === 'http' ? http : https
 
       prot.get(url, res => {
         if (res.headers.location) {
