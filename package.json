@@ -1,6 +1,6 @@
 {
   "name": "electron-pdf-window",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "view PDF files in electron browser windows",
   "main": "index.js",
   "scripts": {

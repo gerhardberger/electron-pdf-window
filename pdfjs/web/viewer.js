@@ -7487,6 +7487,11 @@ var pdfjsWebLibs;
             waitForBeforeOpening.push(loadAndEnablePDFBug(enabled));
           }
         }
+
+        // electron-pdf-window: setting this true, to get proper history in
+        // BrowserWindow.
+        PDFJS.disableHistory = true
+
         mozL10n.setLanguage(PDFJS.locale);
         if (!PDFViewerApplication.supportsPrinting) {
           appConfig.toolbar.print.classList.add('hidden');
