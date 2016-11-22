@@ -6,9 +6,13 @@ const readChunk = require('read-chunk')
 const fileType = require('file-type')
 const extend = require('deep-extend')
 
+const pdfjsPath = path.join(__dirname, 'pdfjs', 'web', 'viewer.html')
+
 function isPDF (url) {
   return new Promise((resolve, reject) => {
-    if (url.match(/^file:\/\//i)) {
+    if (url.startsWith(`file://${pdfjsPath}?file=`)) {
+      resolve(false)
+    } else if (url.match(/^file:\/\//i)) {
       const fileUrl = url.replace(/^file:\/\//i, '')
       const buffer = readChunk.sync(fileUrl, 0, 262)
       const ft = fileType(buffer)
@@ -92,8 +96,7 @@ PDFWindow.addSupport = function (browserWindow) {
   browserWindow.loadURL = function (url) {
     isPDF(url).then(isit => {
       if (isit) {
-        load.call(browserWindow, `file://${
-          path.join(__dirname, 'pdfjs', 'web', 'viewer.html')}?file=${url}`)
+        load.call(browserWindow, `file://${pdfjsPath}?file=${url}`)
       } else {
         load.call(browserWindow, url)
       }
