@@ -75,7 +75,7 @@ class PDFWindow extends BrowserWindow {
       } else {
         super.loadURL(url)
       }
-    })
+    }).catch(() => super.loadURL(url))
   }
 }
 
