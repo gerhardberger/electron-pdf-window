@@ -43,7 +43,7 @@ function isPDF (url) {
             }
           })
         }
-      })
+      }).on('error', err => reject(err))
     }
   })
 }
