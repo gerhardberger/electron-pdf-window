@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Remote test</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      const electron = require('electron')
+      const PDFWindow = require('../')
+      const { BrowserWindow } = electron.remote
+
+      const win = new BrowserWindow({
+        width: 800,
+        height: 600
+      })
+
+      PDFWindow.addSupport(win)
+
+      win.loadURL('http://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf')
+    </script>
+  </body>
+</html>

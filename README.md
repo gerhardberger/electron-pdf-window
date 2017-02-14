@@ -40,6 +40,24 @@ that has support for viewing PDF files.
 #### `PDFWindow.addSupport(win)`
 adds PDF viewing support for `win`, which is a `BrowserWindow` instance.
 
+## using from the renderer process
+
+Using the `PDFWindow` class directly from the renderer process is not
+recommended, because electron doesn't support proper extending of their built-in
+classes. In order to add PDF support from the renderer, use the `addSupport`
+method.
+
+``` js
+const { BrowserWindow } = require('electron').remote
+const PDFWindow = require('electron-pdf-window')
+
+const win = new BrowserWindow({ width: 800, height: 600 })
+
+PDFWindow.addSupport(win)
+
+win.loadURL('file:///a/b/c.pdf')
+```
+
 ## test
 
 ```

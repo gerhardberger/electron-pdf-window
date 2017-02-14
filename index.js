@@ -1,10 +1,14 @@
-const { BrowserWindow } = require('electron')
+const isRenderer = require('is-electron-renderer')
+const electron = require('electron')
 const path = require('path')
 const http = require('http')
 const https = require('https')
 const readChunk = require('read-chunk')
 const fileType = require('file-type')
 const extend = require('deep-extend')
+
+const BrowserWindow = isRenderer
+  ? electron.remote.BrowserWindow : electron.BrowserWindow
 
 const pdfjsPath = path.join(__dirname, 'pdfjs', 'web', 'viewer.html')
 
