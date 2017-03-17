@@ -100,7 +100,7 @@ PDFWindow.addSupport = function (browserWindow) {
   browserWindow.loadURL = function (url) {
     isPDF(url).then(isit => {
       if (isit) {
-        load.call(browserWindow, `file://${pdfjsPath}?file=${url}`)
+        load.call(browserWindow, `file://${pdfjsPath}?file=${encodeURIComponent(url)}`)
       } else {
         load.call(browserWindow, url)
       }
