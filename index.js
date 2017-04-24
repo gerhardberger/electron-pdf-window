@@ -16,8 +16,8 @@ function isPDF (url) {
   return new Promise((resolve, reject) => {
     if (url.startsWith(`file://${pdfjsPath}?file=`)) {
       resolve(false)
-    } else if (url.match(/^file:\/\//i)) {
-      const fileUrl = url.replace(/^file:\/\//i, '')
+    } else if (url.match(/^file:\/\/\//i)) {
+      const fileUrl = url.replace(/^file:\/\/\//i, '')
       const buffer = readChunk.sync(fileUrl, 0, 262)
       const ft = fileType(buffer)
 
