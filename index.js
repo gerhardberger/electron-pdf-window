@@ -1,53 +1,53 @@
 const isRenderer = require('is-electron-renderer')
 const electron = require('electron')
 const path = require('path')
-const http = require('http')
-const https = require('https')
 const readChunk = require('read-chunk')
 const fileType = require('file-type')
 const extend = require('deep-extend')
+const got = require('got')
 
 const BrowserWindow = isRenderer
   ? electron.remote.BrowserWindow : electron.BrowserWindow
 
-const pdfjsPath = path.join(__dirname, 'pdfjs', 'web', 'viewer.html')
+const PDF_JS_PATH = path.join(__dirname, 'pdfjs', 'web', 'viewer.html')
+
+function isAlreadyLoadedWithPdfJs (url) {
+  return url.startsWith(`file://${PDF_JS_PATH}?file=`)
+}
+
+function isFile (url) {
+  return url.match(/^file:\/\//i)
+}
+
+function getMimeOfFile (url) {
+  const fileUrl = url.replace(/^file:\/\//i, '')
+  const buffer = readChunk.sync(fileUrl, 0, 262)
+  const ft = fileType(buffer)
+
+  return ft ? ft.mime : null
+}
+
+function hasPdfExtension (url) {
+  return url.match(/\.pdf$/i)
+}
 
 function isPDF (url) {
   return new Promise((resolve, reject) => {
-    if (url.startsWith(`file://${pdfjsPath}?file=`)) {
+    if (isAlreadyLoadedWithPdfJs(url)) {
       resolve(false)
-    } else if (url.match(/^file:\/\//i)) {
-      const fileUrl = url.replace(/^file:\/\//i, '')
-      const buffer = readChunk.sync(fileUrl, 0, 262)
-      const ft = fileType(buffer)
-
-      if (!ft) return resolve(false)
-
-      resolve(ft.mime === 'application/pdf')
-    } else if (url.match(/\.pdf$/i)) {
+    } else if (isFile(url)) {
+      resolve(getMimeOfFile(url) === 'application/pdf')
+    } else if (hasPdfExtension(url)) {
       resolve(true)
     } else {
-      const m = url.match(/^(https*):\/\//i)
-      if (!m) resolve(false)
-      const prot = m[1] === 'http' ? http : https
-
-      prot.get(url, res => {
+      got.head(url).then(res => {
         if (res.headers.location) {
           isPDF(res.headers.location).then(isit => resolve(isit))
-            .catch(err => reject(err))
+          .catch(err => reject(err))
         } else {
-          res.once('data', chunk => {
-            res.destroy()
-
-            const ft = fileType(chunk)
-            if (ft) {
-              resolve(ft.mime === 'application/pdf')
-            } else {
-              resolve(false)
-            }
-          })
+          resolve(res.headers['content-type'].indexOf('application/pdf') !== -1)
         }
-      }).on('error', err => reject(err))
+      }).catch(err => reject(err))
     }
   })
 }
@@ -101,7 +101,7 @@ PDFWindow.addSupport = function (browserWindow) {
   browserWindow.loadURL = function (url, options) {
     isPDF(url).then(isit => {
       if (isit) {
-        load.call(browserWindow, `file://${pdfjsPath}?file=${
+        load.call(browserWindow, `file://${PDF_JS_PATH}?file=${
           decodeURIComponent(url)}`, options)
       } else {
         load.call(browserWindow, url, options)
