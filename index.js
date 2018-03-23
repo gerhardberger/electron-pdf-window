@@ -33,8 +33,8 @@ function isData (url) {
 
 function getMimeOfData (url) {
   const fileUrl = url.replace(/^data:/i, '')
-  const end = url.indexOf(';')
-  return url.substr(0, end)
+  const end = fileUrl.indexOf(';')
+  return fileUrl.substr(0, end)
 }
 
 function hasPdfExtension (url) {
