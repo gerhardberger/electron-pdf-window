@@ -28,7 +28,7 @@ function getMimeOfFile (url) {
 }
 
 function hasPdfExtension (url) {
-  return url.match(/\.pdf$/i)
+  return url.match(/([^\?]*\.pdf\?)|(\.pdf$)/i)
 }
 
 function isPDF (url) {
