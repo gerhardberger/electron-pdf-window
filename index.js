@@ -31,6 +31,10 @@ function hasPdfExtension (url) {
   return url.match(/\.pdf$/i)
 }
 
+function hasBlobData(url){
+  return url.match(/^blob:/i);
+}
+
 function isPDF (url) {
   return new Promise((resolve, reject) => {
     if (isAlreadyLoadedWithPdfJs(url)) {
@@ -39,6 +43,8 @@ function isPDF (url) {
       resolve(getMimeOfFile(url) === 'application/pdf')
     } else if (hasPdfExtension(url)) {
       resolve(true)
+    } else if(hasBlobData(url)) {
+      resolve(true);
     } else {
       got.head(url).then(res => {
         if (res.headers.location) {
