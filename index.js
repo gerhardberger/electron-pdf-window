@@ -54,9 +54,9 @@ function isPDF (url) {
 
 class PDFWindow extends BrowserWindow {
   constructor (opts) {
-    super(extend({}, opts, {
+    super(extend({}, {
       webPreferences: { nodeIntegration: false }
-    }))
+    }, opts))
 
     this.webContents.on('will-navigate', (event, url) => {
       event.preventDefault()
