@@ -72,19 +72,20 @@ class PDFWindow extends BrowserWindow {
     this.webContents.on('new-window', (event, url) => {
       event.preventDefault()
 
-      event.newGuest = new PDFWindow()
-      event.newGuest.loadURL(url)
+      event.newGuest = new PDFWindow();
+      event.newGuest.loadURL(url);
+      event.newGuest.setMenu(null);
     })
   }
 
   loadURL (url, options) {
-    isPDF(url).then(isit => {
+    return isPDF(url).then(isit => {
       if (isit) {
-        super.loadURL(`file://${
+        return super.loadURL(`file://${
           path.join(__dirname, 'pdfjs', 'web', 'viewer.html')}?file=${
             decodeURIComponent(url)}`, options)
       } else {
-        super.loadURL(url, options)
+        return super.loadURL(url, options)
       }
     }).catch(() => super.loadURL(url, options))
   }
@@ -92,25 +93,27 @@ class PDFWindow extends BrowserWindow {
 
 PDFWindow.addSupport = function (browserWindow) {
   browserWindow.webContents.on('will-navigate', (event, url) => {
-    event.preventDefault()
-    browserWindow.loadURL(url)
+    event.preventDefault();
+    browserWindow.loadURL(url);
+    event.newGuest.setMenu(null);
   })
 
   browserWindow.webContents.on('new-window', (event, url) => {
     event.preventDefault()
 
-    event.newGuest = new PDFWindow()
-    event.newGuest.loadURL(url)
+    event.newGuest = new PDFWindow();
+    event.newGuest.loadURL(url);
+    event.newGuest.setMenu(null);
   })
 
   const load = browserWindow.loadURL
   browserWindow.loadURL = function (url, options) {
-    isPDF(url).then(isit => {
+    return isPDF(url).then(isit => {
       if (isit) {
-        load.call(browserWindow, `file://${PDF_JS_PATH}?file=${
+        return load.call(browserWindow, `file://${PDF_JS_PATH}?file=${
           decodeURIComponent(url)}`, options)
       } else {
-        load.call(browserWindow, url, options)
+        return load.call(browserWindow, url, options)
       }
     })
   }
