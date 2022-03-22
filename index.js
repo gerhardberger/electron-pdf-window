@@ -83,7 +83,7 @@ class PDFWindow extends BrowserWindow {
       if (isit) {
         return super.loadURL(`file://${
           path.join(__dirname, 'pdfjs', 'web', 'viewer.html')}?file=${
-            decodeURIComponent(url)}`, options)
+            encodeURIComponent(url)}`, options)
       } else {
         return super.loadURL(url, options)
       }
