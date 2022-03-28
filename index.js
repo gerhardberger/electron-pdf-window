@@ -27,6 +27,16 @@ function getMimeOfFile (url) {
   return ft ? ft.mime : null
 }
 
+function isData (url) {
+  return url.match(/^data:/i)
+}
+
+function getMimeOfData (url) {
+  const fileUrl = url.replace(/^data:/i, '')
+  const end = fileUrl.indexOf(';')
+  return fileUrl.substr(0, end)
+}
+
 function hasPdfExtension (url) {
   return url.match(/\.pdf$/i)
 }
@@ -41,6 +51,8 @@ function isPDF (url) {
       resolve(false)
     } else if (isFile(url)) {
       resolve(getMimeOfFile(url) === 'application/pdf')
+    } else if (isData(url)) {
+      resolve(getMimeOfData(url) === 'application/pdf')
     } else if (hasPdfExtension(url)) {
       resolve(true)
     } else if(hasBlobData(url)) {
